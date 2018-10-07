@@ -1,0 +1,111 @@
+// protoc --plugin=protoc-gen-dart=C:\Users\Frank\AppData\Roaming\Pub\Cache\bin\protoc-gen-dart.bat --dart_out=. lib/src/model/model.proto
+
+syntax = "proto3";
+
+message State {
+  repeated Player turn_ordered_players = 3;
+  repeated int32 draw_deck_card_ids = 4;
+  repeated int32 discard_deck_card_ids = 5;
+}
+
+message Action {
+  enum Type {
+    NONE = 0;
+    MOVE = 1;
+    PLAY = 2;
+  }
+  Type type = 1;
+
+  MoveAction move = 2;
+  PlayAction play = 3;
+}
+
+message MoveAction {
+  int32 card_id = 1;
+  repeated int32 path_spot_ids = 2;
+}
+
+message PlayAction {
+  int32 card_id = 1;
+}
+
+message Data {
+  oneof kind {
+    InitialData initial_data = 1;
+    PlayerStateViewData player_state_view = 2;
+  }
+}
+
+message InitialData {
+  repeated Spot map = 1;
+  repeated Card cards = 2;
+}
+
+message PlayerStateViewData {
+  int32 current_player_id = 1;
+  Action.Type next_action_type = 2;
+  Player self = 3;
+  repeated PlayerView others = 4;
+}
+
+message PlayerView {
+  int32 player_id = 1;
+  int32 current_spot_id = 2;
+  Resources resources = 3;
+  int32 income = 4;
+  int32 bribe = 5;
+}
+
+message Player {
+  int32 id = 1;
+  int32 current_spot_id = 2;
+  repeated int32 hand_card_ids = 3;
+  Resources resources = 4;
+  int32 income = 5;
+  int32 bribe = 6;
+}
+
+message Spot {
+  int32 id = 1;
+  SpotType type = 2;
+  repeated int32 from_spot_ids = 3;
+  repeated int32 to_spot_ids = 4;
+}
+
+message Card {
+  int32 id = 1;
+  string name = 2;
+  SpotType playSpotType = 3;
+  int32 move_amount = 4;
+  Resources move_reward = 5;
+  Resources play_cost = 6;
+  Resources play_reward = 7;
+}
+
+message Resources {
+  int32 points = 1;
+  int32 gold = 2;
+  int32 votes = 3;
+  int32 evil = 4;
+}
+
+enum SpotType {
+  JAIL = 0;
+  INFERNO = 1;
+  CASINO = 2;
+  COURT = 3;
+  TREASURE = 4;
+  ASTRAL_PLANE = 5;
+  BANK = 6;
+  OFFICE = 7;
+  PLANT = 8;
+  DUMP = 9;
+  MARKETPLACE = 10;
+  INCOME = 11;
+  BRIBE = 12;
+  RISK = 13;
+  MISFORTUNE = 14;
+  TRIBUNE = 15;
+  GAMBLE = 16;
+  POLICE = 17;
+}
