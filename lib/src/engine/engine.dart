@@ -84,7 +84,7 @@ class Engine {
       player.currentSpotId = movePath[i].id;
       // TODO: pass over effect
 
-      _emitPlayerStateViewData(player.id, Action_Type.NONE);
+      _emitPlayerStateViews(player.id, Action_Type.NONE);
     }
     player.currentSpotId = movePath.last.id;
     // TODO: land effect
@@ -102,14 +102,14 @@ class Engine {
   }
 
   Future<MoveAction> _getMove(PlayerChannel playerChannel) async {
-    _emitPlayerStateViewData(playerChannel.playerId, Action_Type.MOVE);
+    _emitPlayerStateViews(playerChannel.playerId, Action_Type.MOVE);
     return (await playerChannel.actionStream
             .firstWhere((action) => action.type == Action_Type.MOVE))
         .move;
   }
 
   Future<PlayAction> _getPlay(PlayerChannel playerChannel) async {
-    _emitPlayerStateViewData(playerChannel.playerId, Action_Type.PLAY);
+    _emitPlayerStateViews(playerChannel.playerId, Action_Type.PLAY);
     return (await playerChannel.actionStream
             .firstWhere((action) => action.type == Action_Type.PLAY))
         .play;
@@ -120,8 +120,7 @@ class Engine {
         ..initialData =
             (InitialData()..map.addAll(allSpots)..cards.addAll(allCards))));
 
-  void _emitPlayerStateViewData(
-          int currentPlayerId, Action_Type nextActionType) =>
+  void _emitPlayerStateViews(int currentPlayerId, Action_Type nextActionType) =>
       playerChannels.forEach((playerChannel) => playerChannel.dataSink.add(
           Data()
             ..playerStateView = (PlayerStateViewData()
@@ -129,6 +128,7 @@ class Engine {
               ..nextActionType = nextActionType
               ..self = _state.turnOrderedPlayers
                   .singleWhere((player) => player.id == playerChannel.playerId)
+                  .clone()
               ..others.addAll(_toViewData(_state.turnOrderedPlayers
                   .where((player) => player.id != playerChannel.playerId))))));
 
@@ -137,6 +137,7 @@ class Engine {
 
   static Iterable<PlayerView> _toViewData(Iterable<Player> players) =>
       players.map((player) => PlayerView()
+        ..playerId = player.id
         ..currentSpotId = player.currentSpotId
         ..resources = player.resources
         ..income = player.income

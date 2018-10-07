@@ -28,7 +28,7 @@ class Client {
           ..type = Action_Type.MOVE
           ..move = (MoveAction()
             ..cardId = playerStateView.self.handCardIds.first
-            ..pathSpotIds.add(0)));
+            ..pathSpotIds.addAll([0, 1])));
       } else if (playerStateView.nextActionType == Action_Type.PLAY) {
         controller.add(Action()
           ..type = Action_Type.PLAY
