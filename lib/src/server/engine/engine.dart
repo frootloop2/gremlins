@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:gremlins/src/data/cards.json.dart' show cardData;
-import 'package:gremlins/src/data/spots.json.dart' show spotData;
-import 'package:gremlins/src/engine/player_channel.dart';
 import 'package:gremlins/src/model/model.pb.dart';
+import 'package:gremlins/src/server/data/cards.json.dart' show cardData;
+import 'package:gremlins/src/server/data/spots.json.dart' show spotData;
+import 'package:gremlins/src/server/engine/player_channel.dart';
 
 class Engine {
   static final List<Spot> allSpots =

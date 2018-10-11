@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:gremlins/src/engine/engine.dart';
-import 'package:gremlins/src/engine/player_channel.dart';
 import 'package:gremlins/src/model/model.pb.dart';
+import 'package:gremlins/src/server/engine/engine.dart';
+import 'package:gremlins/src/server/engine/player_channel.dart';
 import 'package:shelf/shelf_io.dart' as shelf;
 import 'package:shelf_web_socket/shelf_web_socket.dart' show webSocketHandler;
 import 'package:web_socket_channel/web_socket_channel.dart';
